@@ -4,6 +4,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { truncateText } from "@/utils/truncateText";
 import { Rating } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   data: any;
@@ -11,12 +12,14 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
-
-    const productRating = data.reviews.reduce((acc:number, item:any)=>
-        item.rating + acc , 0)/ data.reviews.length
+    const router = useRouter();
+  const productRating =
+    data.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
+    data.reviews.length;
 
   return (
     <div
+    onClick={()=> router.push(`/product/${data.id}`)}
       className="col-span-1 
     cursor-pointer border-[1.2px]
     border-bg-slate-50 rounded-sm p-2 transition hover:scale-105 text-center text-sm  "
@@ -32,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         </div>
         <div className="mt-4">{truncateText(data.name)}</div>
         <div>
-            <Rating value={productRating} readOnly/>
+          <Rating value={productRating} readOnly />
         </div>
         <div>{data.reviews.length} reviews</div>
         <div className="font-semibold">{formatPrice(data.price)}</div>
